@@ -107,6 +107,34 @@ class MavenPublishPluginIntegrationTest {
     assertSourceJarContainsFile("com/vanniktech/maven/publish/test/TestActivity.java", "src/main/java")
   }
 
+  @Test fun generatesArtifactsAndDocumentationOnAndroidMultiVariantProject() {
+    setupFixture("passing_android_multi_variant_project")
+
+    val result = executeGradleCommands(TEST_TASK, "--stacktrace")
+    repoFolder.walkTopDown().forEach { println(it.path) }
+
+    assertExpectedTasksRanSuccessfully(result)
+
+    val pomFile = "$TEST_POM_ARTIFACT_ID-$TEST_VERSION_NAME.pom"
+    val moduleFile = "$TEST_POM_ARTIFACT_ID-$TEST_VERSION_NAME.module"
+    val debugArtifactAar = "$TEST_POM_ARTIFACT_ID-$TEST_VERSION_NAME-debug.aar"
+    val debugJavadocJar = "$TEST_POM_ARTIFACT_ID-$TEST_VERSION_NAME-debug-javadoc.jar"
+    val debugSourcesJar = "$TEST_POM_ARTIFACT_ID-$TEST_VERSION_NAME-debug-sources.jar"
+    val releaseArtifactAar = "$TEST_POM_ARTIFACT_ID-$TEST_VERSION_NAME-release.aar"
+    val releaseJavadocJar = "$TEST_POM_ARTIFACT_ID-$TEST_VERSION_NAME-release-javadoc.jar"
+    val releaseSourcesJar = "$TEST_POM_ARTIFACT_ID-$TEST_VERSION_NAME-release-sources.jar"
+    assertArtifactGenerated(pomFile, TEST_POM_ARTIFACT_ID, TEST_GROUP, TEST_VERSION_NAME)
+    assertArtifactGenerated(moduleFile, TEST_POM_ARTIFACT_ID, TEST_GROUP, TEST_VERSION_NAME)
+    assertArtifactGenerated(debugArtifactAar, TEST_POM_ARTIFACT_ID, TEST_GROUP, TEST_VERSION_NAME)
+    assertArtifactGenerated(debugJavadocJar, TEST_POM_ARTIFACT_ID, TEST_GROUP, TEST_VERSION_NAME)
+    assertArtifactGenerated(debugSourcesJar, TEST_POM_ARTIFACT_ID, TEST_GROUP, TEST_VERSION_NAME)
+    assertArtifactGenerated(releaseArtifactAar, TEST_POM_ARTIFACT_ID, TEST_GROUP, TEST_VERSION_NAME)
+    assertArtifactGenerated(releaseJavadocJar, TEST_POM_ARTIFACT_ID, TEST_GROUP, TEST_VERSION_NAME)
+    assertArtifactGenerated(releaseSourcesJar, TEST_POM_ARTIFACT_ID, TEST_GROUP, TEST_VERSION_NAME)
+
+    assertPomContentMatches()
+  }
+
   @Test fun generatesArtifactsAndDocumentationOnAndroidWithKotlinProject() {
     setupFixture("passing_android_with_kotlin_project")
 

@@ -234,12 +234,13 @@ import com.vanniktech.maven.publish.JavadocJar
 
 apply plugin: "com.vanniktech.maven.publish.base"
 
-
 mavenPublishing {
     // available options:
     //   - JavaLibrary
     //   - GradlePlugin
     //   - AndroidLibrary
+    //   - AndroidSingleVariantLibrary (incubating, requires AGP 7.1)
+    //   - AndroidMultiVariantLibrary (incubating, requires AGP 7.1)
     //   - KotlinJvm
     //   - KotlinJs
     //   - KotlinMultiplatform

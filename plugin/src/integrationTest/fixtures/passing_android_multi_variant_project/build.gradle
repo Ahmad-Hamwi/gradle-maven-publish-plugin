@@ -1,0 +1,21 @@
+import com.vanniktech.maven.publish.AndroidMultiVariantLibrary
+
+plugins {
+    id "com.android.library"
+    id "com.vanniktech.maven.publish.base"
+}
+
+group = "com.example"
+version = "1.0.0"
+
+android {
+    compileSdkVersion 29
+}
+
+mavenPublishing {
+    signAllPublications()
+    pomFromGradleProperties()
+    configure(new AndroidMultiVariantLibrary())
+}
+
+apply from: "maven-publish.gradle"
